@@ -8,7 +8,7 @@ public class StartUI {
         Item first = new Item(1, "First item");
         tracker.add(first);
         Item found = tracker.findById(1);
-        if(found !=null) {
+        if (found != null) {
             System.out.println(found.getId() + " - " + found.getName());
         }
     }
