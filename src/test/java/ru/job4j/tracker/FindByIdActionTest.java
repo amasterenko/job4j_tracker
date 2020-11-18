@@ -10,7 +10,7 @@ public class FindByIdActionTest {
     public void whenItemExists() {
         Input in = new StubInput(new String[] {"2"});
         Output out = new StubOutput();
-        Tracker tracker = new Tracker();
+        Store tracker = new MemTracker();
         tracker.add(new Item("item1"));
         tracker.add(new Item("item2"));
         FindByIdAction find = new FindByIdAction(out);
@@ -25,7 +25,7 @@ public class FindByIdActionTest {
     public void whenNoItemsFound() {
         Input in = new StubInput(new String[] {"3"});
         Output out = new StubOutput();
-        Tracker tracker = new Tracker();
+        Store tracker = new MemTracker();
         tracker.add(new Item("item1"));
         tracker.add(new Item("item2"));
         FindByIdAction find = new FindByIdAction(out);
@@ -39,7 +39,7 @@ public class FindByIdActionTest {
     public void whenNoItems() {
         Input in = new StubInput(new String[] {"1"});
         Output out = new StubOutput();
-        Tracker tracker = new Tracker();
+        Store tracker = new MemTracker();
         FindByIdAction find = new FindByIdAction(out);
         find.execute(in, tracker);
         assertThat(out.toString(), is(

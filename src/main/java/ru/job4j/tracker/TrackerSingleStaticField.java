@@ -3,7 +3,7 @@ package ru.job4j.tracker;
 public class TrackerSingleStaticField {
     private static TrackerSingleStaticField instance;
 
-    private Tracker tracker = new Tracker();
+    private Store tracker = new SqlTracker();
 
     private TrackerSingleStaticField() {
     }
@@ -15,7 +15,7 @@ public class TrackerSingleStaticField {
         return instance;
     }
 
-    public Tracker getTracker() {
+    public Store getTracker() {
         return tracker;
     }
 

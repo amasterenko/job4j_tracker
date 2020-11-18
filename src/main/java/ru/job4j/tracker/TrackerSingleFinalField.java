@@ -3,7 +3,7 @@ package ru.job4j.tracker;
 public class TrackerSingleFinalField {
     private static final TrackerSingleFinalField INSTANCE = new TrackerSingleFinalField();
 
-    private Tracker tracker = new Tracker();
+    private Store tracker = new SqlTracker();
 
     private TrackerSingleFinalField() {
 
@@ -13,7 +13,7 @@ public class TrackerSingleFinalField {
         return INSTANCE;
     }
 
-    public Tracker getTracker() {
+    public Store getTracker() {
         return tracker;
     }
 

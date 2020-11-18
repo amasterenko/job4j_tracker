@@ -10,7 +10,7 @@ public class FindAllActionTest {
     public void whenItemExists() {
         Input in = new StubInput(new String[] {""});
         Output out = new StubOutput();
-        Tracker tracker = new Tracker();
+        Store tracker = new MemTracker();
         tracker.add(new Item("item1"));
         tracker.add(new Item("item2"));
         FindAllAction find = new FindAllAction(out);
@@ -25,7 +25,7 @@ public class FindAllActionTest {
     public void whenNoItems() {
         Input in = new StubInput(new String[] {""});
         Output out = new StubOutput();
-        Tracker tracker = new Tracker();
+        Store tracker = new MemTracker();
         FindAllAction find = new FindAllAction(out);
         find.execute(in, tracker);
         assertThat(out.toString(), is(""));

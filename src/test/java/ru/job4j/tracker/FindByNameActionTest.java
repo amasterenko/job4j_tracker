@@ -10,7 +10,7 @@ public class FindByNameActionTest {
     public void whenItemExists() {
         Input in = new StubInput(new String[] {"item2"});
         Output out = new StubOutput();
-        Tracker tracker = new Tracker();
+        Store tracker = new MemTracker();
         tracker.add(new Item("item1"));
         tracker.add(new Item("item2"));
         FindByNameAction find = new FindByNameAction(out);
@@ -25,7 +25,7 @@ public class FindByNameActionTest {
     public void whenItemsExist() {
         Input in = new StubInput(new String[] {"item2"});
         Output out = new StubOutput();
-        Tracker tracker = new Tracker();
+        Store tracker = new MemTracker();
         tracker.add(new Item("item1"));
         tracker.add(new Item("item2"));
         tracker.add(new Item("item2"));
@@ -42,7 +42,7 @@ public class FindByNameActionTest {
     public void whenNoItemsFound() {
         Input in = new StubInput(new String[] {"item3"});
         Output out = new StubOutput();
-        Tracker tracker = new Tracker();
+        Store tracker = new MemTracker();
         tracker.add(new Item("item1"));
         tracker.add(new Item("item2"));
         FindByNameAction find = new FindByNameAction(out);
@@ -56,7 +56,7 @@ public class FindByNameActionTest {
     public void whenNoItems() {
         Input in = new StubInput(new String[] {"item1"});
         Output out = new StubOutput();
-        Tracker tracker = new Tracker();
+        Store tracker = new MemTracker();
         FindByNameAction find = new FindByNameAction(out);
         find.execute(in, tracker);
         assertThat(out.toString(), is(

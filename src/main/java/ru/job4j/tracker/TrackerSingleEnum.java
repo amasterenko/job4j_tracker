@@ -3,9 +3,9 @@ package ru.job4j.tracker;
 public enum TrackerSingleEnum {
     INSTANCE;
 
-    private Tracker tracker;
+    private Store tracker;
 
-    public Tracker getTracker() {
+    public Store getTracker() {
         return tracker;
     }
 }

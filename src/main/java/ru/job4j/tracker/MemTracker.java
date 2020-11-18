@@ -4,10 +4,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class Tracker {
+public class MemTracker implements Store{
     private final List<Item> items = new ArrayList<>();
     private int ids = 1;
-    //private int size = 0;
+
+    @Override
+    public void init() {
+
+    }
 
     public Item add(Item item) {
         item.setId(ids++);
@@ -19,7 +23,7 @@ public class Tracker {
         return items;
     }
 
-    List<Item> findByName(String key) {
+    public List<Item> findByName(String key) {
         List<Item> itemsByName = new ArrayList<>();
         int cnt = 0;
         for (Item item : items) {
@@ -63,5 +67,10 @@ public class Tracker {
             items.remove(indx);
         }
         return rsl;
+    }
+
+    @Override
+    public void close() throws Exception {
+
     }
 }
