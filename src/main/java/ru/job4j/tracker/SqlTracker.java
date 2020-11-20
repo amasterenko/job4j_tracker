@@ -6,11 +6,19 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
-public class SqlTracker implements Store {
+public class SqlTracker implements Store, AutoCloseable {
     private Connection cn;
 
+    public SqlTracker(Connection connection) {
+        this.cn = connection;
+    }
+
+    public SqlTracker() {
+    }
+
     public void init() {
-        try (InputStream in = SqlTracker.class.getClassLoader().getResourceAsStream("app.properties")) {
+        try (InputStream in = SqlTracker.class.getClassLoader()
+                .getResourceAsStream("app.properties")) {
             Properties config = new Properties();
             config.load(in);
             Class.forName(config.getProperty("driver-class-name"));
@@ -33,20 +41,26 @@ public class SqlTracker implements Store {
 
     @Override
     public Item add(Item item) {
-        int rsl;
-        try(PreparedStatement ps = cn.prepareStatement("INSERT INTO items (name) VALUES (?)")) {
+        try (PreparedStatement ps = cn.prepareStatement("INSERT INTO items (name) VALUES (?)",
+                Statement.RETURN_GENERATED_KEYS)) {
             ps.setString(1, item.getName());
-            rsl = ps.executeUpdate();
+            ps.executeUpdate();
+            try (ResultSet generatedKeys = ps.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    item.setId(generatedKeys.getInt(1));
+                    return item;
+                }
+            }
         } catch (SQLException e) {
             return null;
         }
-        return rsl == 1 ? item : null;
+        throw new IllegalStateException("Could not create new user");
     }
 
     @Override
     public boolean replace(int id, Item item) {
         int rsl;
-        try(PreparedStatement ps = cn.prepareStatement("UPDATE items SET name = ? WHERE id = ?")) {
+        try (PreparedStatement ps = cn.prepareStatement("UPDATE items SET name = ? WHERE id = ?")) {
             ps.setString(1, item.getName());
             ps.setInt(2, id);
             rsl = ps.executeUpdate();
@@ -59,7 +73,7 @@ public class SqlTracker implements Store {
     @Override
     public boolean delete(int id) {
         int rsl;
-        try(PreparedStatement ps = cn.prepareStatement("DELETE FROM items WHERE id = ?")) {
+        try (PreparedStatement ps = cn.prepareStatement("DELETE FROM items WHERE id = ?")) {
             ps.setInt(1, id);
             rsl = ps.executeUpdate();
         } catch (SQLException e) {
@@ -72,9 +86,9 @@ public class SqlTracker implements Store {
     public List<Item> findAll() {
         ResultSet set;
         List<Item> resList = new ArrayList<>();
-        try(PreparedStatement ps = cn.prepareStatement("SELECT id, name FROM items")) {
+        try (PreparedStatement ps = cn.prepareStatement("SELECT id, name FROM items")) {
             set = ps.executeQuery();
-            while(set.next()){
+            while (set.next()) {
                 Item item = new Item(set.getInt("id"), set.getString("name"));
                 resList.add(item);
             }
@@ -88,10 +102,12 @@ public class SqlTracker implements Store {
     public List<Item> findByName(String key) {
         ResultSet set;
         List<Item> resList = new ArrayList<>();
-        try(PreparedStatement ps = cn.prepareStatement("SELECT id, name FROM items WHERE name = ?")) {
+        try (PreparedStatement ps = cn.prepareStatement(
+                "SELECT id, name FROM items WHERE name = ?"
+        )) {
             ps.setString(1, key);
             set = ps.executeQuery();
-            while(set.next()){
+            while (set.next()) {
                 Item item = new Item(set.getInt("id"), set.getString("name"));
                 resList.add(item);
             }
@@ -105,10 +121,12 @@ public class SqlTracker implements Store {
     public Item findById(int id) {
         ResultSet set;
         Item resItem = null;
-        try (PreparedStatement ps = cn.prepareStatement("SELECT id, name FROM items WHERE id = ?")) {
+        try (PreparedStatement ps = cn.prepareStatement(
+                "SELECT id, name FROM items WHERE id = ?"
+        )) {
             ps.setInt(1, id);
             set = ps.executeQuery();
-            if (set.next()){
+            if (set.next()) {
                 resItem = new Item(set.getInt("id"), set.getString("name"));
             }
         } catch (SQLException e) {
