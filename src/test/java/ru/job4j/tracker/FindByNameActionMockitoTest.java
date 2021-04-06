@@ -12,14 +12,14 @@ public class FindByNameActionMockitoTest {
     public void whenFindExistingItem() {
         Output output = new StubOutput();
         Store tracker = new MemTracker();
-        tracker.add(new Item("Item for searching"));
+        Item addedItem = tracker.add(new Item("Item for searching"));
         FindByNameAction fnd = new FindByNameAction(output);
         Input input = mock(Input.class);
         when(input.askStr(any(String.class))).thenReturn("Item for searching");
         fnd.execute(input, tracker);
         String ln = System.lineSeparator();
         assertThat(output.toString(), is("=== Find Items by name ===" + ln
-                + "{id=1, name='Item for searching'}" + ln));
+                + addedItem + ln));
     }
 
     @Test

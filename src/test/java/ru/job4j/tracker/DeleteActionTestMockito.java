@@ -14,14 +14,14 @@ public class DeleteActionTestMockito {
     public void whenDeleteExistingItem() {
         Output output = new StubOutput();
         Store tracker = new MemTracker();
-        tracker.add(new Item("Item for deleting"));
+        Item addedItem = tracker.add(new Item("Item for deleting"));
         DeleteAction del = new DeleteAction(output);
         Input input = mock(Input.class);
         when(input.askInt(any(String.class))).thenReturn(1);
         del.execute(input, tracker);
         String ln = System.lineSeparator();
         assertThat(output.toString(), is("=== Delete item ===" + ln
-                + "Item with id 1 was successfully deleted." + ln));
+                + "Item with id " + addedItem.getId() + " was successfully deleted." + ln));
         assertThat(tracker.findById(1), Matchers.nullValue());
     }
 
@@ -31,10 +31,11 @@ public class DeleteActionTestMockito {
         Store tracker = new MemTracker();
         DeleteAction del = new DeleteAction(output);
         Input input = mock(Input.class);
-        when(input.askInt(any(String.class))).thenReturn(1);
+        int id = 1;
+        when(input.askInt(any(String.class))).thenReturn(id);
         del.execute(input, tracker);
         String ln = System.lineSeparator();
         assertThat(output.toString(), is("=== Delete item ===" + ln
-                + "Item with id 1 was not found." + ln));
+                + "Item with id " + id + " was not found." + ln));
     }
 }
