@@ -17,7 +17,8 @@ public class FindByIdActionTest {
         find.execute(in, tracker);
         assertThat(out.toString(), is(
                 "=== Find Item by id ===" + System.lineSeparator()
-                        + "{id=2, name='item2'}" + System.lineSeparator()
+                        + "{id=2, name='item2', desc='', created=''}"
+                        + System.lineSeparator()
         ));
     }
 

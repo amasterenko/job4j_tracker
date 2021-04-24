@@ -72,13 +72,18 @@ public class Item {
 
     @Override
     public String toString() {
+        String created = "";
         Date date = new Date();
-        date.setTime(created.getTime());
+        if (this.created != null) {
+            new Date().setTime(this.created.getTime());
+            created = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(date);
+        }
+        String description = this.description != null ? this.description : "";
         return "{"
                 + "id=" + id
                 + ", name='" + name + '\''
                 + ", desc='" + description + '\''
-                + ", created='" + new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(date) + "}";
+                + ", created='" + created + "'}";
     }
 
     @Override

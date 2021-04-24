@@ -16,8 +16,10 @@ public class FindAllActionTest {
         FindAllAction find = new FindAllAction(out);
         find.execute(in, tracker);
         assertThat(out.toString(), is(
-                "{id=1, name='item1'}" + System.lineSeparator()
-                        + "{id=2, name='item2'}" + System.lineSeparator()
+                "{id=1, name='item1', desc='', created=''}"
+                        + System.lineSeparator()
+                        + "{id=2, name='item2', desc='', created=''}"
+                        + System.lineSeparator()
         ));
     }
 

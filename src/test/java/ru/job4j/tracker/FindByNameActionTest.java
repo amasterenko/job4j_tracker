@@ -17,7 +17,8 @@ public class FindByNameActionTest {
         find.execute(in, tracker);
         assertThat(out.toString(), is(
                 "=== Find Items by name ===" + System.lineSeparator()
-                        + "{id=2, name='item2'}" + System.lineSeparator()
+                        + "{id=2, name='item2', desc='', created=''}"
+                        + System.lineSeparator()
         ));
     }
 
@@ -33,8 +34,10 @@ public class FindByNameActionTest {
         find.execute(in, tracker);
         assertThat(out.toString(), is(
                 "=== Find Items by name ===" + System.lineSeparator()
-                        + "{id=2, name='item2'}" + System.lineSeparator()
-                        + "{id=3, name='item2'}" + System.lineSeparator()
+                        + "{id=2, name='item2', desc='', created=''}"
+                        + System.lineSeparator()
+                        + "{id=3, name='item2', desc='', created=''}"
+                        + System.lineSeparator()
         ));
     }
 
