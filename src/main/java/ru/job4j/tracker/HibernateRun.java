@@ -6,6 +6,7 @@ import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 public class HibernateRun {
@@ -14,18 +15,36 @@ public class HibernateRun {
                 .configure().build();
         try {
             SessionFactory sf = new MetadataSources(registry).buildMetadata().buildSessionFactory();
-            Item item = create(new Item("Learn Hibernate"), sf);
-            System.out.println(item);
-            item.setName("Learn Hibernate 5.");
-            update(item, sf);
-            System.out.println(item);
-            Item rsl = findById(item.getId(), sf);
+            Item item1 = create(
+                    new Item("Learn Hibernate - Item1",
+                            "+update DB",
+                            new Timestamp(System.currentTimeMillis())
+                    ),
+                    sf);
+            Item item2 = create(
+                    new Item("Learn Hibernate - Item2",
+                            "+update DB",
+                            new Timestamp(System.currentTimeMillis())
+                    ),
+                    sf);
+            System.out.println(item1);
+            System.out.println(item2);
+            item1.setName("Learn Hibernate 5.");
+            item2.setName("Learn Hibernate 4.");
+            update(item1, sf);
+            update(item2, sf);
+            System.out.println(item1);
+            System.out.println(item2);
+            Item rsl = findById(item1.getId(), sf);
             System.out.println(rsl);
-            delete(rsl.getId(), sf);
+            rsl = findById(item2.getId(), sf);
+            System.out.println(rsl);
             List<Item> list = findAll(sf);
             for (Item it : list) {
                 System.out.println(it);
             }
+            list.forEach(i -> delete(i.getId(), sf));
+            list.forEach(System.out::println);
         }  catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -53,7 +72,7 @@ public class HibernateRun {
     public static void delete(Integer id, SessionFactory sf) {
         Session session = sf.openSession();
         session.beginTransaction();
-        Item item = new Item(null);
+        Item item = new Item();
         item.setId(id);
         session.delete(item);
         session.getTransaction().commit();

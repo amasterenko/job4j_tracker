@@ -1,9 +1,9 @@
 package ru.job4j.tracker;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Comparator;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Objects;
 
 @Entity
@@ -13,6 +13,8 @@ public class Item {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String name;
+    private String description;
+    private Timestamp created;
 
     public Item() {
     }
@@ -23,6 +25,12 @@ public class Item {
 
     public Item(String name) {
         this.name = name;
+    }
+
+    public Item(String name, String description, Timestamp created) {
+        this.name = name;
+        this.description = description;
+        this.created = created;
     }
 
     public Item(int id, String name) {
@@ -46,12 +54,31 @@ public class Item {
         this.name = name;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Timestamp getCreated() {
+        return created;
+    }
+
+    public void setCreated(Timestamp created) {
+        this.created = created;
+    }
+
     @Override
     public String toString() {
+        Date date = new Date();
+        date.setTime(created.getTime());
         return "{"
                 + "id=" + id
                 + ", name='" + name + '\''
-                + "}";
+                + ", desc='" + description + '\''
+                + ", created='" + new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(date) + "}";
     }
 
     @Override
