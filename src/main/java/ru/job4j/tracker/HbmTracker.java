@@ -30,23 +30,35 @@ public class HbmTracker implements Store, AutoCloseable {
 
     @Override
     public boolean replace(int id, Item item) {
-        try (Session session = sf.openSession()) {
+        final Session session = sf.openSession();
+        try {
             session.beginTransaction();
             item.setId(id);
             session.update(item);
             session.getTransaction().commit();
+        } catch (final Exception e) {
+            session.getTransaction().rollback();
+            return false;
+        } finally {
+            session.close();
         }
         return true;
     }
 
     @Override
     public boolean delete(int id) {
-        try (Session session = sf.openSession()) {
+        final Session session = sf.openSession();
+        try {
             session.beginTransaction();
             Item item = new Item();
             item.setId(id);
             session.delete(item);
             session.getTransaction().commit();
+        } catch (final Exception e) {
+            session.getTransaction().rollback();
+            return false;
+        } finally {
+            session.close();
         }
         return true;
     }
@@ -56,7 +68,7 @@ public class HbmTracker implements Store, AutoCloseable {
         List<Item> result = List.of();
         try (Session session = sf.openSession()) {
             session.beginTransaction();
-            result = session.createQuery("from ru.job4j.tracker.Item").list();
+            result = session.createQuery("from Item", Item.class).list();
             session.getTransaction().commit();
         }
         return result;
@@ -68,7 +80,7 @@ public class HbmTracker implements Store, AutoCloseable {
         try (Session session = sf.openSession()) {
             session.beginTransaction();
             result = session.createQuery(
-                    "from ru.job4j.tracker.Item where name = :paramName")
+                    "from Item where name = :paramName", Item.class)
                     .setParameter("paramName", key)
                     .list();
             session.getTransaction().commit();
