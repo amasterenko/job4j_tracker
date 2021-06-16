@@ -1,9 +1,9 @@
 package ru.job4j.tracker.hsqldb;
 
 import org.junit.Test;
-import ru.job4j.tracker.HbmTracker;
-import ru.job4j.tracker.Item;
-import ru.job4j.tracker.Store;
+import ru.job4j.tracker.store.HbmTracker;
+import ru.job4j.tracker.model.Item;
+import ru.job4j.tracker.store.Store;
 
 import java.sql.Timestamp;
 import java.util.List;

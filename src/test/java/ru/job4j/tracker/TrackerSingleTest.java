@@ -1,6 +1,11 @@
 package ru.job4j.tracker;
 
 import org.junit.Test;
+import ru.job4j.tracker.store.TrackerSingleClass;
+import ru.job4j.tracker.store.TrackerSingleEnum;
+import ru.job4j.tracker.store.TrackerSingleFinalField;
+import ru.job4j.tracker.store.TrackerSingleStaticField;
+
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertThat;

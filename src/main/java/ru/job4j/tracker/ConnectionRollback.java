@@ -5,13 +5,13 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 /**
- * Connection, which rollback all commits.
- * It is used for integration test.
+ * Connection rollbacks all commits.
+ * It is used for integration tests.
  */
 public class ConnectionRollback {
 
     /**
-     * Create connection with autocommit=false mode and rollback call, when conneciton is closed.
+     * Create connection with autocommit=false mode.
      * @param connection connection.
      * @return Connection object.
      * @throws SQLException possible exception.

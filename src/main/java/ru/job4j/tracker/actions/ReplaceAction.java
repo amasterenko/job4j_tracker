@@ -1,4 +1,9 @@
-package ru.job4j.tracker;
+package ru.job4j.tracker.actions;
+
+import ru.job4j.tracker.store.Store;
+import ru.job4j.tracker.input.Input;
+import ru.job4j.tracker.model.Item;
+import ru.job4j.tracker.output.Output;
 
 public class ReplaceAction implements UserAction {
     private final Output out;

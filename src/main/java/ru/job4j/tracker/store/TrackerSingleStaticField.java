@@ -1,4 +1,4 @@
-package ru.job4j.tracker;
+package ru.job4j.tracker.store;
 
 public class TrackerSingleStaticField {
     private static TrackerSingleStaticField instance;
